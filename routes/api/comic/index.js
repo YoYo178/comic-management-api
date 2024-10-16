@@ -42,7 +42,7 @@ router.post("/:id", async (req, res) => {
     }
 
     // At the end everything was successful, send response to client
-    res.send({ status: "success", timestamp: Date.now(), data: req.body, errors })
+    res.send({ status: "success", timestamp: Date.now(), data: book, errors })
 })
 
 // Edit (Update) comic book by id
@@ -87,7 +87,7 @@ router.patch("/:id", async (req, res) => {
     }
 
     // All went well, saved data to database, send reponse to client
-    res.send({ status: "success", timestamp: Date.now(), data: req.body, errors })
+    res.send({ status: "success", timestamp: Date.now(), data: existingBook, errors });
 })
 
 // Delete comic book by id
@@ -112,8 +112,17 @@ router.delete("/:id", async (req, res) => {
         return res.send({ status: "failed", message: "An error occured while deleting the comic book from the database.", errors }).status(500);
     }
 
-    // All went well, saved data to database, send reponse to client
-    res.send({ status: "success", timestamp: Date.now(), data: req.body, errors })
+    // All went well, send reponse to client
+    res.send({ status: "success", timestamp: Date.now(), data: {}, errors });
+})
+
+router.delete("/", async (req, res) => {
+    const errors = [];
+    // Delete all books data from the database
+    await ComicBookModel.deleteMany({});
+
+    // All went well, send reponse to client
+    res.send({ status: "success", timestamp: Date.now(), data: {}, errors });
 })
 
 // Get comic book by id
