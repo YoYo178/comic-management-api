@@ -106,6 +106,17 @@ router.delete("/:id", async (req, res, next) => {
     res.send({ status: "success", timestamp: Date.now(), data: req.body, errors })
 })
 
+// Get comic book by id
+router.get('/:id', async (req, res, next) => {
+    // Check if the book exists first, if not, send an error to the client
+    let book = await ComicBookModel.findOne({ bookId: req.params.id });
+    if (!book)
+        return res.send({ status: "failed", message: "No comic book exists for the specified id." }).status(404);
+
+    // Book exists, send data to client
+    res.send({ status: "success", timestamp: Date.now(), book });
+});
+
 // "/api/comic" route to check api status
 router.get('/', (req, res) => {
     res.send({ status: "success", timestamp: Date.now() });
