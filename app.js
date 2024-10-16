@@ -1,10 +1,6 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-
-const indexRouter = require('./routes/index');
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
 const app = express();
 
@@ -28,4 +24,4 @@ app.use(function(req, res, next) {
   res.redirect("/404")
 });
 
-module.exports = app;
+export default app;

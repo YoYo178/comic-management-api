@@ -3,10 +3,11 @@
 /**
  * Module dependencies.
  */
+import app from "../app.js";
+import debugPackage from "debug";
+import http from "http";
 
-const app = require('../app');
-const debug = require('debug')('comic-management-api:server');
-const http = require('http');
+const debug = debugPackage("comic-management-api:server");
 
 /**
  * Get port from environment and store in Express.
