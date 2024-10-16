@@ -2,6 +2,8 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
+import apiRouter from "./routes/api/index.js"
+
 const app = express();
 
 // Middlewares
@@ -9,10 +11,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/', indexRouter);
+app.use('/api', apiRouter);
 
 // 404 page
 app.get("/404", (req, res) => {
