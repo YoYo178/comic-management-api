@@ -10,7 +10,7 @@ router.post("/:id", async (req, res) => {
 
     // Check if id is a number, if not, return an error to client
     if (isNaN(id))
-        return res.send({ status: "failed", message: "An invalid type for 'id' was provided, expected of type 'number'." }).status(400);
+        return res.send({ status: "failed", message: "An invalid type for 'id' was provided, expected of type 'number'.", errors }).status(400);
 
     // Check if the book already exists under the specified id
     const existingBook = await ComicBookModel.findOne({ bookId: id });
@@ -42,6 +42,46 @@ router.post("/:id", async (req, res) => {
     }
 
     // At the end everything was successful, send response to client
+    res.send({ status: "success", timestamp: Date.now(), data: req.body, errors })
+})
+
+// Edit (Update) comic book by id
+router.patch("/:id", async (req, res, next) => {
+    const errors = [];
+
+    // Check if comic book exists under the specified id, if not, send an error to client
+    const existingBook = await ComicBookModel.findOne({ bookId: req.params.id });
+    if (!existingBook)
+        return res.send({ status: "failed", message: "No book exists under the specified id.", errors }).status(400);
+
+    // Update data, and handle type mismatches
+    for (const [key, value] of Object.entries(req.body)) {
+        // User provided an unknown key
+        if (!existingBook[key]) {
+            return res.send({ status: "failed", message: `The property '${key}' does not exist on the comic book data.`, errors });
+        }
+
+        // User provided an unknown value
+        if (typeof (existingBook[key]) != typeof (value)) {
+            return res.send({ status: "failed", message: `Invalid value type '${typeof (value)}' provided for property '${key}', expected '${typeof (existingBook[key])}`, errors }).status(400)
+        }
+
+        // Key and Value are validated, finally assign it to the book object
+        existingBook[key] = value;
+    }
+
+    // Validate once again just to be sure
+    await existingBook.validate();
+
+    // Attempt to save data to database, and catch errors
+    try {
+        await existingBook.save();
+    } catch (err) {
+        errors.push(err);
+        return res.send({ status: "failed", message: "An error occured while saving the comic book to the database.", errors }).status(500);
+    }
+
+    // All went well, saved data to database, send reponse to client
     res.send({ status: "success", timestamp: Date.now(), data: req.body, errors })
 })
 
