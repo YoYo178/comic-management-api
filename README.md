@@ -12,9 +12,9 @@ A REST API for managing comic book inventories.
 
 ##### Response(s)
 
-> |   http code   |        content-type        | response                                          |
-> |---------------|----------------------------|-------------------------------------------------- |
-> |     `200`     | `text/plain;charset=UTF-8` | `{"status": "success", timestamp: 1729072605904}` |
+> |   http code   |    content-type    | response                                          |
+> |---------------|--------------------|-------------------------------------------------- |
+> |     `200`     | `application/json` | `{"status": "success", timestamp: 1729072605904}` |
 
 </details>
 
