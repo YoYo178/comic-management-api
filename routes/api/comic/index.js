@@ -46,7 +46,7 @@ router.post("/:id", async (req, res) => {
 })
 
 // Edit (Update) comic book by id
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id", async (req, res) => {
     const errors = [];
 
     // Check if comic book exists under the specified id, if not, send an error to client
@@ -86,7 +86,7 @@ router.patch("/:id", async (req, res, next) => {
 })
 
 // Delete comic book by id
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", async (req, res) => {
     const errors = [];
 
     // Check if the book exists first, if not, send an error to the client
@@ -107,7 +107,7 @@ router.delete("/:id", async (req, res, next) => {
 })
 
 // Get comic book by id
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req, res) => {
     // Check if the book exists first, if not, send an error to the client
     let book = await ComicBookModel.findOne({ bookId: req.params.id });
     if (!book)
@@ -118,7 +118,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // Get all books from the database
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
     const books = await ComicBookModel.find();
     res.send({ status: "success", timestamp: Date.now(), books });
 });
