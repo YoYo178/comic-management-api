@@ -2,7 +2,9 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-import apiRouter from "./routes/api/index.js"
+import "./db/db.js";
+
+import apiRouter from "./routes/api/index.js";
 
 const app = express();
 
@@ -22,7 +24,7 @@ app.get("/404", (req, res) => {
 
 // No matching routes found, redirect to 404 page
 app.use((req, res, next) => {
-  res.redirect("/404")
+  res.redirect("/404");
 });
 
 export default app;
