@@ -20,7 +20,7 @@ app.get("/404", (req, res) => {
 })
 
 // No matching routes found, redirect to 404 page
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.redirect("/404")
 });
 
