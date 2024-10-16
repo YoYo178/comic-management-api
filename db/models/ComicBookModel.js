@@ -1,7 +1,5 @@
 import { model, Schema, Error } from "mongoose";
 
-const { ValidataionError } = Error
-
 const ComicBook = new Schema({
     bookId: { type: Number, required: true },
     bookName: { type: String, required: true },

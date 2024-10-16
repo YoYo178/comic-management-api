@@ -63,7 +63,7 @@ router.patch("/:id", async (req, res) => {
     for (const [key, value] of Object.entries(req.body)) {
         // User provided an unknown key
         if (!existingBook[key]) {
-            return res.send({ status: "failed", message: `The property '${key}' does not exist on the comic book data.`, errors });
+            return res.send({ status: "failed", message: `The property '${key}' does not exist in the comic book data.`, errors }).status(400);
         }
 
         // User provided an unknown value

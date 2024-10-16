@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
-
-// The MongoDB URL to connect to
-const uri = "mongodb+srv://comicproject:comicsmanager@comics-db.nlf04.mongodb.net/?retryWrites=true&w=majority&appName=comics-db";
+import config from "../config.json" with { type: "json" };
 
 try {
     // Try to connect to database
-    await mongoose.connect(uri);
+    await mongoose.connect(config.MONGODB_URL);
     console.log("[MongoDB] Connected to database successfully.");
 } catch (err) {
     // An error occured
