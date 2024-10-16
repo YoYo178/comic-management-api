@@ -48,9 +48,14 @@ router.post("/:id", async (req, res) => {
 // Edit (Update) comic book by id
 router.patch("/:id", async (req, res) => {
     const errors = [];
+    const id = +req.params.id;
+
+    // Check if id is a number, if not, return an error to client
+    if (isNaN(id))
+        return res.send({ status: "failed", message: "An invalid type for 'id' was provided, expected of type 'number'.", errors }).status(400);
 
     // Check if comic book exists under the specified id, if not, send an error to client
-    const existingBook = await ComicBookModel.findOne({ bookId: req.params.id });
+    const existingBook = await ComicBookModel.findOne({ bookId: id });
     if (!existingBook)
         return res.send({ status: "failed", message: "No book exists under the specified id.", errors }).status(400);
 
@@ -88,6 +93,11 @@ router.patch("/:id", async (req, res) => {
 // Delete comic book by id
 router.delete("/:id", async (req, res) => {
     const errors = [];
+    const id = +req.params.id;
+
+    // Check if id is a number, if not, return an error to client
+    if (isNaN(id))
+        return res.send({ status: "failed", message: "An invalid type for 'id' was provided, expected of type 'number'.", errors }).status(400);
 
     // Check if the book exists first, if not, send an error to the client
     const existingBook = await ComicBookModel.findOne({ bookId: req.params.id })
@@ -108,19 +118,27 @@ router.delete("/:id", async (req, res) => {
 
 // Get comic book by id
 router.get('/:id', async (req, res) => {
+    const errors = [];
+    const id = +req.params.id;
+
+    // Check if id is a number, if not, return an error to client
+    if (isNaN(id))
+        return res.send({ status: "failed", message: "An invalid type for 'id' was provided, expected of type 'number'.", errors }).status(400);
+
     // Check if the book exists first, if not, send an error to the client
     let book = await ComicBookModel.findOne({ bookId: req.params.id });
     if (!book)
-        return res.send({ status: "failed", message: "No comic book exists for the specified id." }).status(404);
+        return res.send({ status: "failed", message: "No comic book exists for the specified id.", errors }).status(404);
 
     // Book exists, send data to client
-    res.send({ status: "success", timestamp: Date.now(), book });
+    res.send({ status: "success", timestamp: Date.now(), book, errors });
 });
 
 // Get all books from the database
 router.get('/', async (req, res) => {
+    const errors = []; // Not required, but added to keep consistency
     const books = await ComicBookModel.find();
-    res.send({ status: "success", timestamp: Date.now(), books });
+    res.send({ status: "success", timestamp: Date.now(), books, errors });
 });
 
 export default router;
