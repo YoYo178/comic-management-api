@@ -13,12 +13,13 @@ router.post("/:id", async (req, res) => {
         return res.send({ status: "failed", message: "An invalid type for 'id' was provided, expected of type 'number'." }).status(400);
 
     // Check if the book already exists under the specified id
-    const existingBook = await ComicBookModel.findOne({ bookId: req.params.id });
+    const existingBook = await ComicBookModel.findOne({ bookId: id });
     if (existingBook)
         return res.send({ status: "failed", message: "A book already exists for the specified id.", errors }).status(400);
 
     // Create and validate book data
     const book = new ComicBookModel(req.body);
+    book.bookId = id;
     const error = await book.validate();
 
     // Handle validation errors
