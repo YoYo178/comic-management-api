@@ -85,6 +85,27 @@ router.patch("/:id", async (req, res, next) => {
     res.send({ status: "success", timestamp: Date.now(), data: req.body, errors })
 })
 
+// Delete comic book by id
+router.delete("/:id", async (req, res, next) => {
+    const errors = [];
+
+    // Check if the book exists first, if not, send an error to the client
+    const existingBook = await ComicBookModel.findOne({ bookId: req.params.id })
+    if (!existingBook)
+        return res.send({ status: "failed", message: "No book exists under the specified id.", errors }).status(400);
+
+    // Attempt to delete the book from the database and catch errors
+    try {
+        await ComicBookModel.deleteOne({ bookId: req.params.id });
+    } catch (err) {
+        errors.push(err);
+        return res.send({ status: "failed", message: "An error occured while deleting the comic book from the database.", errors }).status(500);
+    }
+
+    // All went well, saved data to database, send reponse to client
+    res.send({ status: "success", timestamp: Date.now(), data: req.body, errors })
+})
+
 // "/api/comic" route to check api status
 router.get('/', (req, res) => {
     res.send({ status: "success", timestamp: Date.now() });
