@@ -117,9 +117,10 @@ router.get('/:id', async (req, res, next) => {
     res.send({ status: "success", timestamp: Date.now(), book });
 });
 
-// "/api/comic" route to check api status
-router.get('/', (req, res) => {
-    res.send({ status: "success", timestamp: Date.now() });
+// Get all books from the database
+router.get('/', async (req, res, next) => {
+    const books = await ComicBookModel.find();
+    res.send({ status: "success", timestamp: Date.now(), books });
 });
 
 export default router;
