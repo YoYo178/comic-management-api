@@ -19,7 +19,7 @@ app.use('/api', apiRouter);
 
 // 404 page
 app.get("/404", (req, res) => {
-  res.send("NOT FOUND").status(404);
+  res.send({ status: "failed", message: "Page not found." }).status(404);
 })
 
 // No matching routes found, redirect to 404 page
